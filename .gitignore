@@ -1,0 +1,19 @@
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Visual Studio generated
+bin/
+obj/
+*.suo
+*.user
+*.userprefs
+
+# npm modules
+node_modules/

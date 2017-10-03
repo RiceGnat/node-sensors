@@ -1,0 +1,10 @@
+{
+  "name": "speedfan",
+  "version": "1.0.0",
+  "description": "Access SpeedFan sensor data",
+  "main": "speedfan.js",
+  "author": "RiceGnat",
+  "dependencies": {
+    "edge": "github:tjanczuk/edge"
+  }
+}
