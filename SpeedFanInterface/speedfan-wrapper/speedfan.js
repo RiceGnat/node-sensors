@@ -67,6 +67,10 @@ const poll = function (getAll, callback) {
 
         // Get data from SpeedFan
         getSensorData("", function (error, result) {
+            if (error || !result) {
+                return callback(error, null);
+            }
+
             var out = {};
 
             out.temps = pairNamesValues(tempNames, result.temps, tempActive, 100);

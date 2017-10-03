@@ -9,7 +9,7 @@ const server = http.createServer((req, res) => {
         speedfan.poll(options.all, (error, results) => {
             if (error) {
                 res.writeHead(500);
-                res.end("An error occurred getting SpeedFan data");
+                res.end("An error occurred getting SpeedFan data. SpeedFan may not be running!");
             }
             else {
                 res.writeHead(200, { "Content-Type": "text/json" });
