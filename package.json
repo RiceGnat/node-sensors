@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "Access SpeedFan sensor data",
   "author": "RiceGnat",
+  "main": "speedfan.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/RiceGnat/speedfan-interface"
   },
   "dependencies": {
-    "edge": "github:tjanczuk/edge"
+    "edge": "latest"
   },
   "files": [
     "server.js",
