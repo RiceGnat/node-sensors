@@ -13,7 +13,7 @@ const poll = function (getAll, callback) {
     // Load SpeedFan sensor config file
     fs.readFile(path.join(config.speedfanLocation, "speedfansens.cfg"), "utf8", function (err, data) {
         if (err) {
-            callback(err);
+            callback("Couldn't read SpeedFan config file");
         }
 
         // Read sensor names from config file
