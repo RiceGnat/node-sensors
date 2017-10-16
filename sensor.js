@@ -4,12 +4,13 @@ const path = require("path");
 
 const config = require("./package.json").config;
 
-const getSensorData = edge.func({
-    assemblyFile: config.dllPath ? config.dllPath : path.join(__dirname, "lib/SpeedFanInterface.dll"),
-    typeName: "SpeedFan.SpeedFanInterface"
-});
+const getSpeedFanData = function (getAll, callback) {
+    // Import library function
+    const getData = edge.func({
+        assemblyFile: path.join(__dirname, "lib/SpeedFanInterface.dll"),
+        typeName: "SpeedFan.SpeedFanInterface"
+    });
 
-const poll = function (getAll, callback) {
     // Load SpeedFan sensor config file
     fs.readFile(path.join(config.speedfanLocation, "speedfansens.cfg"), "utf8", function (err, data) {
         if (err) {
@@ -58,6 +59,7 @@ const poll = function (getAll, callback) {
                 if (active[i] || getAll) {
                     pairs.push({
                         name: names[i],
+                        // Divide value if needed
                         value: values[i] / (divideBy ? divideBy : 1)
                     });
                 }
@@ -66,7 +68,7 @@ const poll = function (getAll, callback) {
         }
 
         // Get data from SpeedFan
-        getSensorData("", function (error, result) {
+        getData("", function (error, result) {
             if (error || !result) {
                 return callback(error, null);
             }
@@ -82,6 +84,36 @@ const poll = function (getAll, callback) {
     });
 }
 
+const getAISuiteData = function (callback) {
+    // Import library function
+    const getData = edge.func({
+        assemblyFile: path.join(__dirname, "lib/AISuiteInterface.dll"),
+        typeName: "AISuite.AISuiteInterface"
+    });
+
+    // Get data from AI Suite
+    getData("", function (error, result) {
+        if (error || !result) {
+            return callback(error, null);
+        }
+
+        var out = result;
+
+        // Divide temps by 10
+        for (var i = 0; i < out.temps.length; i++) {
+            out.temps[i].value /= 10;
+        }
+        
+        // Divide volts by 1000
+        for (var i = 0; i < out.volts.length; i++) {
+            out.volts[i].value /= 1000;
+        }
+
+        if (typeof callback === "function") callback(null, out);
+    });
+}
+
 module.exports = {
-    poll: poll
+    pollSpeedFan: getSpeedFanData,
+    pollAISuite: getAISuiteData
 }
