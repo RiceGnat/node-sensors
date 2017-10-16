@@ -1,7 +1,7 @@
 {
   "name": "speedfan",
   "version": "1.0.0",
-  "description": "Access SpeedFan sensor data",
+  "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
   "main": "speedfan.js",
   "repository": {
@@ -14,7 +14,7 @@
   "files": [
     "server.js",
     "speedfan.js",
-    "SpeedFanInterface.dll"
+    "lib"
   ],
   "config": {
     "speedfanLocation": "C:\\Program Files (x86)\\SpeedFan"
