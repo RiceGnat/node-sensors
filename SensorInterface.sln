@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedFanInterface", "SpeedFanInterface\SpeedFanInterface.csproj", "{1ECB7497-3EC9-4781-B37B-BE58BDA0817E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedFanInterfaceDriver", "SpeedFanInterfaceDriver\SpeedFanInterfaceDriver.csproj", "{A11088D3-B9F6-4CC1-9552-6538B08BF2D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDriver", "TestDriver\TestDriver.csproj", "{A11088D3-B9F6-4CC1-9552-6538B08BF2D0}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "speedfan-wrapper", "speedfan-wrapper\speedfan-wrapper.njsproj", "{E301960C-380A-493A-A91F-C9B3A8F8059C}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "node-wrapper", "node-wrapper\node-wrapper.njsproj", "{E301960C-380A-493A-A91F-C9B3A8F8059C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AISuiteInterface", "AISuiteInterface\AISuiteInterface.csproj", "{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E301960C-380A-493A-A91F-C9B3A8F8059C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E301960C-380A-493A-A91F-C9B3A8F8059C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E301960C-380A-493A-A91F-C9B3A8F8059C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@ const path = require("path");
 const config = require("./package.json").config;
 
 const getSensorData = edge.func({
-    assemblyFile: config.dllPath ? config.dllPath : path.join(__dirname, "SpeedFanInterface.dll"),
+    assemblyFile: config.dllPath ? config.dllPath : path.join(__dirname, "lib/SpeedFanInterface.dll"),
     typeName: "SpeedFan.SpeedFanInterface"
 });
 
