@@ -1,6 +1,6 @@
 ﻿const http = require("http");
 const url = require("url");
-const speedfan = require("./speedfan");
+const speedfan = require("./sensor");
 
 const server = http.createServer((req, res) => {
     var reqUrl = url.parse(req.url, true);

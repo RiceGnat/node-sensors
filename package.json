@@ -1,5 +1,5 @@
 {
-  "name": "speedfan",
+  "name": "sensor",
   "version": "1.0.0",
   "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
@@ -13,7 +13,7 @@
   },
   "files": [
     "server.js",
-    "speedfan.js",
+    "sensor.js",
     "lib"
   ],
   "config": {
