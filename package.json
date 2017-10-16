@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
-  "main": "speedfan.js",
+  "main": "sensor.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RiceGnat/speedfan-interface"
+    "url": "https://github.com/RiceGnat/node-sensors"
   },
   "dependencies": {
     "edge": "latest"
