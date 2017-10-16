@@ -9,7 +9,7 @@
     "url": "https://github.com/RiceGnat/speedfan-interface"
   },
   "dependencies": {
-    "edge": "github:tjanczuk/edge"
+    "edge": "latest"
   },
   "files": [
     "server.js",
