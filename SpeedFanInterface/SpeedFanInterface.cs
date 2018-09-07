@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,12 @@ namespace SpeedFan
 
 		[DllImport("kernel32.dll")]
 		internal static extern bool CloseHandle(IntPtr hObject);
+
+		private static string[] GetNames()
+		{
+			// Get SpeedFan process
+			Process[] processes = Process.GetProcessesByName("speedfan");
+		}
 
 		public static SpeedFanSharedMem GetData()
 		{

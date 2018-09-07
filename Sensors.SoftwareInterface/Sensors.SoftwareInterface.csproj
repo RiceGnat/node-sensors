@@ -7,8 +7,8 @@
     <ProjectGuid>{B1B0AEEF-73F9-48FD-8E02-A01DBE2FC5AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AISuiteInterface</RootNamespace>
-    <AssemblyName>AISuiteInterface</AssemblyName>
+    <RootNamespace>Sensors.SoftwareInterface</RootNamespace>
+    <AssemblyName>Sensors.SoftwareInterface</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -41,9 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AISuiteData.cs" />
-    <Compile Include="AISuite2Interface.cs" />
+    <Compile Include="Kernel32.cs" />
+    <Compile Include="PSAPI.cs" />
+    <Compile Include="SensorData.cs" />
+    <Compile Include="AISuite\AISuite2Interface.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensor.cs" />
+    <Compile Include="SpeedFan\SpeedFanInterface.cs" />
+    <Compile Include="SpeedFan\SpeedFanSharedMem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

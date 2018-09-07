@@ -4,19 +4,19 @@
   "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
   "main": "sensor.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/RiceGnat/node-sensors"
   },
   "dependencies": {
-    "edge": "latest"
+    "edge-js": "latest"
   },
   "files": [
     "server.js",
     "sensor.js",
     "lib"
-  ],
-  "config": {
-    "speedfanLocation": "C:\\Program Files (x86)\\SpeedFan"
-  }
+  ]
 }

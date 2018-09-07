@@ -50,13 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AISuiteInterface\AISuiteInterface.csproj">
+    <ProjectReference Include="..\Sensors.SoftwareInterface\Sensors.SoftwareInterface.csproj">
       <Project>{b1b0aeef-73f9-48fd-8e02-a01dbe2fc5af}</Project>
-      <Name>AISuiteInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SpeedFanInterface\SpeedFanInterface.csproj">
-      <Project>{1ecb7497-3ec9-4781-b37b-be58bda0817e}</Project>
-      <Name>SpeedFanInterface</Name>
+      <Name>Sensors.SoftwareInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

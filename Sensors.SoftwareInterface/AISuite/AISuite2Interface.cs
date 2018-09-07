@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AISuite
+namespace Sensors.SoftwareInterface.AISuite
 {
 	public class AISuite2Interface
 	{
 		const string PROCESS_NAME = "AI Suite II";
-		const int PROCESS_WM_READ = 0x0010;
+		const int PROCESS_ALL_ACCESS = 0x001F0FFF;
+		const int LIST_MODULES_32BIT = 0x01;
 		const int VOLTS_ADDRESS_OFFSET = 0xB9800;
 		const int TEMPS_ADDRESS_OFFSET = 0xB980C;
 		const int FANS_ADDRESS_OFFSET = 0xB9818;
@@ -17,21 +19,12 @@ namespace AISuite
 		const int VALUE_OFFSET = 4;
 		const int NAME_OFFSET = 36;
 
-		[DllImport("kernel32.dll")]
-		public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-		[DllImport("kernel32.dll")]
-		public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-		[DllImport("kernel32.dll")]
-		public static extern bool CloseHandle(IntPtr hObject);
-
 		private static byte[] ReadBytes(IntPtr processHandle, IntPtr address, int length)
 		{
 			int bytesRead = 0;
 			byte[] buffer = new byte[length];
 
-			ReadProcessMemory((int)processHandle, (int)address, buffer, buffer.Length, ref bytesRead);
+			Kernel32.ReadProcessMemory(processHandle, address, buffer, buffer.Length, ref bytesRead);
 			return buffer;
 		}
 
@@ -58,43 +51,50 @@ namespace AISuite
 			return sensors;
 		}
 
-		public static AISuiteData GetData()
+		public static SensorData GetData()
 		{
 			// Get AI Suite process
-			Process[] processes = Process.GetProcessesByName("AI Suite II");
-			if (processes.Length == 0)
-				throw new Exception($"Couldn't find the \"{PROCESS_NAME}.exe\" process. Check that AI Suite is running.");
-			Process process = processes[0];
-			IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
+			Process process = Helper.GetProcess(PROCESS_NAME);
+			IntPtr processHandle = Kernel32.OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
 
 			// Get process modules
-			ProcessModule bClient;
-			ProcessModuleCollection bModules;
+			IntPtr baseAddress = IntPtr.Zero;
+			IntPtr[] hMods = new IntPtr[1024];
+			GCHandle gch = GCHandle.Alloc(hMods, GCHandleType.Pinned);
 			try
 			{
-				bModules = process.Modules;
-			}
-			catch (System.ComponentModel.Win32Exception ex)
-			{
-				throw new Exception("Couldn't access process modules. The calling process probably doesn't have sufficient privileges.", ex);
-			}
+				IntPtr pModules = gch.AddrOfPinnedObject();
+				uint uiSize = (uint)(Marshal.SizeOf(typeof(IntPtr)) * (hMods.Length));
+				uint cbNeeded = 0;
+				if (!PSAPI.EnumProcessModulesEx(processHandle, pModules, uiSize, out cbNeeded, LIST_MODULES_32BIT))
+					throw new Exception("Couldn't access process modules. The calling process probably doesn't have sufficient privileges.");
 
-			//Find sensor module base address
-			IntPtr baseAddress = IntPtr.Zero;
-			for (int i = 0; i < bModules.Count; i++)
-			{
-				bClient = bModules[i];
-				if (bClient.ModuleName == "Sensor.dll")
+				// Look for sensor module
+				Int32 uiTotalNumberofModules = (Int32)(cbNeeded / Marshal.SizeOf(typeof(IntPtr)));
+				for (int i = 0; i < uiTotalNumberofModules; i++)
 				{
-					baseAddress = bClient.BaseAddress;
-					break;
+					StringBuilder lpBaseName = new StringBuilder(1024);
+					PSAPI.GetModuleFileNameEx(processHandle, hMods[i], lpBaseName, lpBaseName.Capacity);
+
+					if (Path.GetFileName(lpBaseName.ToString()) == "Sensor.dll")
+					{
+						//Find sensor module base address
+						PSAPI.GetModuleInformation(processHandle, hMods[i], out PSAPI.MODULEINFO info, (uint)Marshal.SizeOf(typeof(PSAPI.MODULEINFO)));
+						baseAddress = info.lpBaseOfDll;
+						break;
+					}
 				}
 			}
+			finally
+			{
+				gch.Free();
+			}
+
 			if (baseAddress == IntPtr.Zero)
-				throw new Exception("Couldn't locate AI Suite sensor module");
+				throw new Exception("Couldn't locate AI Suite sensor module.");
 
 			// Get sensors
-			AISuiteData data = new AISuiteData
+			SensorData data = new SensorData
 			{
 				volts = GetSensorBlock(processHandle, IntPtr.Add(baseAddress, VOLTS_ADDRESS_OFFSET)),
 				temps = GetSensorBlock(processHandle, IntPtr.Add(baseAddress, TEMPS_ADDRESS_OFFSET)),
@@ -102,7 +102,7 @@ namespace AISuite
 			};
 
 			// Clean up and return data
-			CloseHandle(processHandle);
+			Kernel32.CloseHandle(processHandle);
 			return data;
 		}
 
