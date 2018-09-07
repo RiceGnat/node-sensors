@@ -15,7 +15,7 @@ namespace TestDriver
 			SpeedFanSharedMem sfData = SpeedFanInterface.GetData();
 			Console.WriteLine(String.Join<Int32>(", ", sfData.temps));
 
-			AISuiteData aiData = AISuiteInterface.GetData();
+			AISuiteData aiData = AISuite2Interface.GetData();
 
 			for (int i = 0; i < aiData.volts.Length; i++)
 			{
@@ -29,7 +29,6 @@ namespace TestDriver
 			{
 				Console.WriteLine(aiData.fans[i].name + " : " + aiData.fans[i].value);
 			}
-
 
 			Console.ReadKey();
 		}
