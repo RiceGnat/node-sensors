@@ -23,7 +23,7 @@ namespace Sensors.SoftwareInterface.SpeedFan
 			IntPtr mem = Kernel32.MapViewOfFile(handle, FILE_MAP_READ, 0, 0, Marshal.SizeOf(typeof(SpeedFanSharedMem)));
 			if (mem == IntPtr.Zero)
 			{
-				throw new Exception("Unable to read shared memory.");
+				throw new Exception("Unable to read shared memory. SpeedFan might not be running.");
 			}
 
 			sm = (SpeedFanSharedMem)Marshal.PtrToStructure(mem, typeof(SpeedFanSharedMem));
@@ -92,7 +92,7 @@ namespace Sensors.SoftwareInterface.SpeedFan
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Couldn't get sensor names from SpeedFan config.", ex);
+				throw new Exception("Couldn't get sensor names from SpeedFan config. The calling process probably doesn't have sufficient privileges.", ex);
 			}
 
 			return data;

@@ -91,7 +91,7 @@ namespace Sensors.SoftwareInterface.AISuite
 			}
 
 			if (baseAddress == IntPtr.Zero)
-				throw new Exception("Couldn't locate AI Suite sensor module.");
+				throw new Exception("Couldn't locate AI Suite sensor module. The calling process probably doesn't have sufficient privileges.");
 
 			// Get sensors
 			SensorData data = new SensorData

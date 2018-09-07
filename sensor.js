@@ -4,6 +4,20 @@ const path = require("path");
 
 const dll = "lib/Sensors.SoftwareInterface.dll";
 
+const formatError = error => {
+    var out = {
+        message: error.message
+    };
+
+    if (error.InnerException)
+        out.exception = {
+            name: error.InnerException.name,
+            message: error.InnerException.message
+        };
+
+    return out;
+};
+
 const getSpeedFanData = function getSpeedFanData() {
     // Import library function
     const getData = edge.func({
@@ -14,24 +28,24 @@ const getSpeedFanData = function getSpeedFanData() {
     return new Promise((resolve, reject) => {
         // Get data from SpeedFan
         getData("", function (error, result) {
-            if (error || !result) return reject(error);
+            if (error) return reject(formatError(error));
 
-            var out = result;
+            var i, out = result;
 
             // Divide temps by 100
-            for (var i = 0; i < out.temps.length; i++) {
+            for (i = 0; i < out.temps.length; i++) {
                 out.temps[i].value /= 100;
             }
 
             // Divide volts by 100
-            for (var i = 0; i < out.volts.length; i++) {
+            for (i = 0; i < out.volts.length; i++) {
                 out.volts[i].value /= 100;
             }
 
             resolve(out);
         });
     });
-}
+};
 
 const getAISuite2Data = function () {
     // Import library function
@@ -43,24 +57,24 @@ const getAISuite2Data = function () {
     return new Promise((resolve, reject) => {
         // Get data from AI Suite
         getData("", function (error, result) {
-            if (error || !result) return reject(error);
+            if (error) return reject(formatError(error));
 
-            var out = result;
+            var i, out = result;
 
             // Divide temps by 10
-            for (var i = 0; i < out.temps.length; i++) {
+            for (i = 0; i < out.temps.length; i++) {
                 out.temps[i].value /= 10;
             }
 
             // Divide volts by 1000
-            for (var i = 0; i < out.volts.length; i++) {
+            for (i = 0; i < out.volts.length; i++) {
                 out.volts[i].value /= 1000;
             }
 
             resolve(out);
         });
     });
-}
+};
 
 module.exports = {
     getSpeedFanData: getSpeedFanData,

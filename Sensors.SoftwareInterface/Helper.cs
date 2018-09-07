@@ -9,7 +9,7 @@ namespace Sensors.SoftwareInterface
 		{
 			Process[] processes = Process.GetProcessesByName(name);
 			if (processes.Length == 0)
-				throw new Exception($"Couldn't find the \"{name}.exe\" process.");
+				throw new Exception($"Couldn't find the {name}.exe process.");
 			return processes[0];
 		}
 	}
