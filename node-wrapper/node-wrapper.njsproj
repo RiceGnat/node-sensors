@@ -22,7 +22,7 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Compile Include="server.js" />
-    <Compile Include="sensor.js" />
+    <Compile Include="sensors.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />

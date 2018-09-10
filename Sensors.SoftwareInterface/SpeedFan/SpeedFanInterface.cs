@@ -76,7 +76,7 @@ namespace Sensors.SoftwareInterface.SpeedFan
 							break;
 					}
 
-					Sensor s = new Sensor
+					SpeedFanSensor s = new SpeedFanSensor
 					{
 						name = nameRx.Match(m.Groups[3].Value).Groups[1].Value.TrimEnd(),
 						value = value,

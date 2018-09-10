@@ -1,6 +1,6 @@
 const edge = require("edge-js");
-const fs = require("fs");
 const path = require("path");
+const icue = require("icue-sensor-logs");
 
 const dll = "lib/Sensors.SoftwareInterface.dll";
 
@@ -18,7 +18,7 @@ const formatError = error => {
     return out;
 };
 
-const getSpeedFanData = function getSpeedFanData() {
+const getSpeedFanData = () => {
     // Import library function
     const getData = edge.func({
         assemblyFile: path.join(__dirname, dll),
@@ -47,7 +47,7 @@ const getSpeedFanData = function getSpeedFanData() {
     });
 };
 
-const getAISuite2Data = function () {
+const getAISuite2Data = () => {
     // Import library function
     const getData = edge.func({
         assemblyFile: path.join(__dirname, dll),
@@ -76,7 +76,12 @@ const getAISuite2Data = function () {
     });
 };
 
+const getiCUEData = () => {
+    return icue.getSensors();
+}
+
 module.exports = {
     getSpeedFanData: getSpeedFanData,
-    getAISuite2Data: getAISuite2Data
+    getAISuite2Data: getAISuite2Data,
+    getiCUEData: getiCUEData
 };

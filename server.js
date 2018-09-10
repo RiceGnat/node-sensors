@@ -1,19 +1,24 @@
 ﻿const http = require("http");
 const url = require("url");
-const sensor = require("./sensor");
+const sensors = require("./sensors");
 
 const errHandler = error => ({ error: error });
 
 const server = http.createServer((req, res) => {
     Promise.all([
-        sensor.getSpeedFanData()
+        sensors.getSpeedFanData()
         .then(results => ({
             source: "SpeedFan",
             data: results
         }), errHandler),
-        sensor.getAISuite2Data()
+        sensors.getAISuite2Data()
         .then(results => ({
             source: "AI Suite II",
+            data: results
+        }), errHandler),
+        sensors.getiCUEData()
+        .then(results => ({
+            source: "iCUE",
             data: results
         }), errHandler)
     ])

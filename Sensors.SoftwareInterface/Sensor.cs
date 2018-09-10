@@ -6,6 +6,5 @@ namespace Sensors.SoftwareInterface
 	{
 		public string name;
 		public Int32 value;
-		public string chip;
 	}
 }

@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensor.cs" />
     <Compile Include="SpeedFan\SpeedFanInterface.cs" />
+    <Compile Include="SpeedFan\SpeedFanSensor.cs" />
     <Compile Include="SpeedFan\SpeedFanSharedMem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

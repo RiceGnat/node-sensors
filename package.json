@@ -1,22 +1,23 @@
 {
-  "name": "sensor",
+  "name": "sensors",
   "version": "1.0.0",
   "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
-  "main": "sensor.js",
+  "main": "sensors.js",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RiceGnat/node-sensors"
+    "url": "https://github.com/RiceGnat/sensors"
   },
   "dependencies": {
-    "edge-js": "latest"
+    "edge-js": "latest",
+    "icue-sensor-logs": "RiceGnat/icue-sensor-logs"
   },
   "files": [
     "server.js",
-    "sensor.js",
+    "sensors.js",
     "lib"
   ]
 }
