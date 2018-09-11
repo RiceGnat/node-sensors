@@ -1,6 +1,6 @@
 const edge = require("edge-js");
 const path = require("path");
-const icue = require("icue-sensor-logs");
+const icue = require("./icue/sensor-logs");
 
 const dll = "lib/Sensors.SoftwareInterface.dll";
 
@@ -37,7 +37,7 @@ const getSpeedFanData = () => getDataFrom("Sensors.SoftwareInterface.SpeedFan.Sp
 const getAISuite2Data = () => getDataFrom("Sensors.SoftwareInterface.AISuite.AISuite2Interface");
 const getOpenHWMonitorData = () => getDataFrom("Sensors.SoftwareInterface.OpenHardwareMonitor.OpenHardwareMonitorInterface");
 
-const getiCUEData = () => icue.getSensors();
+const getiCUEData = () => icue.getSensors().catch(formatError);
 
 module.exports = {
     getSpeedFanData: getSpeedFanData,
