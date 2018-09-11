@@ -12,6 +12,7 @@
     "url": "https://github.com/RiceGnat/sensors"
   },
   "dependencies": {
+    "csv-parse": "^3.0.0",
     "edge-js": "latest",
     "icue-sensor-logs": "RiceGnat/icue-sensor-logs"
   },
