@@ -6,7 +6,7 @@ const dll = "lib/Sensors.SoftwareInterface.dll";
 
 const formatError = error => {
     var out = {
-        message: error.message
+        message: error.message || error
     };
 
     if (error.InnerException)
@@ -37,7 +37,7 @@ const getSpeedFanData = () => getDataFrom("Sensors.SoftwareInterface.SpeedFan.Sp
 const getAISuite2Data = () => getDataFrom("Sensors.SoftwareInterface.AISuite.AISuite2Interface");
 const getOpenHWMonitorData = () => getDataFrom("Sensors.SoftwareInterface.OpenHardwareMonitor.OpenHardwareMonitorInterface");
 
-const getiCUEData = () => icue.getSensors().catch(formatError);
+const getiCUEData = () => icue.getSensors().catch(error => { throw formatError(error); });
 
 module.exports = {
     getSpeedFanData: getSpeedFanData,
