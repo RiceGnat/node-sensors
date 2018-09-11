@@ -19,6 +19,7 @@
   "files": [
     "server.js",
     "sensors.js",
-    "lib"
+    "lib",
+    "icue"
   ]
 }
