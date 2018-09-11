@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sensors.SoftwareInterface.SpeedFan;
 using Sensors.SoftwareInterface.AISuite;
+using Sensors.SoftwareInterface.OpenHardwareMonitor;
 
 namespace Sensors.SoftwareInterface.TestDriver
 {
@@ -12,29 +13,23 @@ namespace Sensors.SoftwareInterface.TestDriver
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("SpeedFan data");
 			PrintSensorData(SpeedFanInterface.GetData());
 
 			Console.WriteLine();
-			Console.WriteLine("AI Suite data");
 			PrintSensorData(AISuite2Interface.GetData());
+
+			Console.WriteLine();
+			PrintSensorData(OpenHardwareMonitorInterface.GetData());
 
 			Console.ReadKey();
 		}
 
 		private static void PrintSensorData(SensorData data)
 		{
-			for (int i = 0; i < data.temps.Length; i++)
+			Console.WriteLine($"{data.source} data");
+			for (int i = 0; i < data.sensors.Length; i++)
 			{
-				Console.WriteLine($"{data.temps[i].name} : {data.temps[i].value}");
-			}
-			for (int i = 0; i < data.fans.Length; i++)
-			{
-				Console.WriteLine($"{data.fans[i].name} : {data.fans[i].value}");
-			}
-			for (int i = 0; i < data.volts.Length; i++)
-			{
-				Console.WriteLine($"{data.volts[i].name} : {data.volts[i].value}");
+				Console.WriteLine($"({data.sensors[i].type}) {data.sensors[i].name} : {data.sensors[i].value}");
 			}
 		}
 	}

@@ -7,20 +7,13 @@ const errHandler = error => ({ error: error });
 const server = http.createServer((req, res) => {
     Promise.all([
         sensors.getSpeedFanData()
-        .then(results => ({
-            source: "SpeedFan",
-            data: results
-        }), errHandler),
+        .catch(errHandler),
         sensors.getAISuite2Data()
-        .then(results => ({
-            source: "AI Suite II",
-            data: results
-        }), errHandler),
+        .catch(errHandler),
+        sensors.getOpenHWMonitorData()
+        .catch(errHandler),
         sensors.getiCUEData()
-        .then(results => ({
-            source: "iCUE",
-            data: results
-        }), errHandler)
+        .catch(errHandler)
     ])
     .then(results => {
         res.writeHead(200, { "Content-Type": "application/json" });

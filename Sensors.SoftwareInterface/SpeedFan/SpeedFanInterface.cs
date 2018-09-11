@@ -30,8 +30,6 @@ namespace Sensors.SoftwareInterface.SpeedFan
 			Kernel32.UnmapViewOfFile(handle);
 			Kernel32.CloseHandle(handle);
 
-			SensorData data = new SensorData();
-
 			// Try to get sensor names from SpeedFan config file
 			try
 			{
@@ -53,26 +51,36 @@ namespace Sensors.SoftwareInterface.SpeedFan
 					sources[m.Groups[1].Value.TrimEnd()] = nameRx.Match(m.Groups[2].Value).Groups[1].Value.TrimEnd();
 				}
 
-				// Map sensor names to values
-				Dictionary<string, List<Sensor>> sensors = new Dictionary<string, List<Sensor>>();
+				// Map sensor names to values, assuming order is the same
+				List<Sensor> sensors = new List<Sensor>();
+				int tempCount = 0;
+				int fanCount = 0;
+				int voltCount = 0;
+
 				rx = new Regex(@"xxx (Fan|Temp|Volt) \d+ from (.*)\n((?:.+=.+\n)+)xxx end", RegexOptions.IgnoreCase);
 				foreach (Match m in rx.Matches(text))
 				{
 					string type = m.Groups[1].Value.TrimEnd().ToLowerInvariant();
 					string source = m.Groups[2].Value.TrimEnd();
-					if (!sensors.ContainsKey(type)) sensors[type] = new List<Sensor>();
+					SensorType sensorType = SensorType.Unknown;
 
-					int value = 0;
+					float value = 0;
 					switch (type)
 					{
 						case "temp":
-							value = sm.temps[sensors[type].Count];
+							value = sm.temps[tempCount] / 100f;
+							sensorType = SensorType.Temperature;
+							tempCount++;
 							break;
 						case "fan":
-							value = sm.fans[sensors[type].Count];
+							value = sm.fans[fanCount];
+							sensorType = SensorType.Fan;
+							fanCount++;
 							break;
 						case "volt":
-							value = sm.volts[sensors[type].Count];
+							value = sm.volts[voltCount] / 100f;
+							sensorType = SensorType.Voltage;
+							voltCount++;
 							break;
 					}
 
@@ -80,22 +88,23 @@ namespace Sensors.SoftwareInterface.SpeedFan
 					{
 						name = nameRx.Match(m.Groups[3].Value).Groups[1].Value.TrimEnd(),
 						value = value,
+						type = sensorType,
 						chip = $"{sources[source]} ({source})"
 					};
 
-					sensors[type].Add(s);
+					sensors.Add(s);
 				}
 
-				data.temps = sensors["temp"].ToArray();
-				data.fans = sensors["fan"].ToArray();
-				data.volts = sensors["volt"].ToArray();
+				return new SensorData
+				{
+					source = "SpeedFan",
+					sensors = sensors.ToArray()
+				};
 			}
 			catch (Exception ex)
 			{
 				throw new Exception("Couldn't get sensor names from SpeedFan config. The calling process probably doesn't have sufficient privileges.", ex);
 			}
-
-			return data;
 		}
 
 		public async Task<object> Invoke(dynamic input)

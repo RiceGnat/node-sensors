@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -28,7 +29,7 @@ namespace Sensors.SoftwareInterface.AISuite
 			return buffer;
 		}
 
-		private static Sensor[] GetSensorBlock(IntPtr processHandle, IntPtr addressPointer)
+		private static Sensor[] GetSensorBlock(IntPtr processHandle, IntPtr addressPointer, SensorType type)
 		{
 			// Get size and address of block
 			byte[] buffer = ReadBytes(processHandle, addressPointer, 8);
@@ -45,7 +46,8 @@ namespace Sensors.SoftwareInterface.AISuite
 				String name = Encoding.ASCII.GetString(buffer, NAME_OFFSET, BLOCK_SIZE - NAME_OFFSET);
 				name = name.Remove(name.IndexOf('\0'));
 				sensors[i].name = name;
-				sensors[i].value = BitConverter.ToInt32(buffer, VALUE_OFFSET);
+				sensors[i].value = BitConverter.ToInt32(buffer, VALUE_OFFSET) / (type == SensorType.Temperature ? 10f : (type == SensorType.Voltage ? 1000f : 1));
+				sensors[i].type = type;
 			}
 
 			return sensors;
@@ -94,16 +96,18 @@ namespace Sensors.SoftwareInterface.AISuite
 				throw new Exception("Couldn't locate AI Suite sensor module. The calling process probably doesn't have sufficient privileges.");
 
 			// Get sensors
-			SensorData data = new SensorData
-			{
-				volts = GetSensorBlock(processHandle, IntPtr.Add(baseAddress, VOLTS_ADDRESS_OFFSET)),
-				temps = GetSensorBlock(processHandle, IntPtr.Add(baseAddress, TEMPS_ADDRESS_OFFSET)),
-				fans = GetSensorBlock(processHandle, IntPtr.Add(baseAddress, FANS_ADDRESS_OFFSET))
-			};
+			List<Sensor> sensors = new List<Sensor>();
+			sensors.AddRange(GetSensorBlock(processHandle, IntPtr.Add(baseAddress, VOLTS_ADDRESS_OFFSET), SensorType.Voltage));
+			sensors.AddRange(GetSensorBlock(processHandle, IntPtr.Add(baseAddress, TEMPS_ADDRESS_OFFSET), SensorType.Temperature));
+			sensors.AddRange(GetSensorBlock(processHandle, IntPtr.Add(baseAddress, FANS_ADDRESS_OFFSET), SensorType.Fan));
 
 			// Clean up and return data
 			Kernel32.CloseHandle(processHandle);
-			return data;
+			return new SensorData
+			{
+				source = "AI Suite II",
+				sensors = sensors.ToArray()
+			};
 		}
 
 		public async Task<object> Invoke(dynamic input)

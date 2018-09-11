@@ -18,70 +18,30 @@ const formatError = error => {
     return out;
 };
 
-const getSpeedFanData = () => {
+const getDataFrom = typeName => {
     // Import library function
     const getData = edge.func({
         assemblyFile: path.join(__dirname, dll),
-        typeName: "Sensors.SoftwareInterface.SpeedFan.SpeedFanInterface"
+        typeName: typeName
     });
 
     return new Promise((resolve, reject) => {
-        // Get data from SpeedFan
         getData("", function (error, result) {
             if (error) return reject(formatError(error));
-
-            var i, out = result;
-
-            // Divide temps by 100
-            for (i = 0; i < out.temps.length; i++) {
-                out.temps[i].value /= 100;
-            }
-
-            // Divide volts by 100
-            for (i = 0; i < out.volts.length; i++) {
-                out.volts[i].value /= 100;
-            }
-
-            resolve(out);
+            resolve(result);
         });
     });
 };
 
-const getAISuite2Data = () => {
-    // Import library function
-    const getData = edge.func({
-        assemblyFile: path.join(__dirname, dll),
-        typeName: "Sensors.SoftwareInterface.AISuite.AISuite2Interface"
-    });
+const getSpeedFanData = () => getDataFrom("Sensors.SoftwareInterface.SpeedFan.SpeedFanInterface");
+const getAISuite2Data = () => getDataFrom("Sensors.SoftwareInterface.AISuite.AISuite2Interface");
+const getOpenHWMonitorData = () => getDataFrom("Sensors.SoftwareInterface.OpenHardwareMonitor.OpenHardwareMonitorInterface");
 
-    return new Promise((resolve, reject) => {
-        // Get data from AI Suite
-        getData("", function (error, result) {
-            if (error) return reject(formatError(error));
-
-            var i, out = result;
-
-            // Divide temps by 10
-            for (i = 0; i < out.temps.length; i++) {
-                out.temps[i].value /= 10;
-            }
-
-            // Divide volts by 1000
-            for (i = 0; i < out.volts.length; i++) {
-                out.volts[i].value /= 1000;
-            }
-
-            resolve(out);
-        });
-    });
-};
-
-const getiCUEData = () => {
-    return icue.getSensors();
-}
+const getiCUEData = () => icue.getSensors();
 
 module.exports = {
     getSpeedFanData: getSpeedFanData,
     getAISuite2Data: getAISuite2Data,
+    getOpenHWMonitorData: getOpenHWMonitorData,
     getiCUEData: getiCUEData
 };

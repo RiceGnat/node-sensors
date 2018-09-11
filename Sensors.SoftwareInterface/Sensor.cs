@@ -5,6 +5,7 @@ namespace Sensors.SoftwareInterface
 	public class Sensor
 	{
 		public string name;
-		public Int32 value;
+		public SensorType type;
+		public float value;
 	}
 }

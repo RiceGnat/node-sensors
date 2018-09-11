@@ -2,8 +2,7 @@
 {
 	public class SensorData
 	{
-		public Sensor[] temps;
-		public Sensor[] fans;
-		public Sensor[] volts;
+		public string source;
+		public Sensor[] sensors;
 	}
 }
