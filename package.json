@@ -1,6 +1,6 @@
 {
   "name": "sensors",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Access sensor data through SpeedFan and AI Suite",
   "author": "RiceGnat",
   "main": "sensors.js",

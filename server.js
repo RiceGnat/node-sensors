@@ -1,10 +1,9 @@
 ﻿const http = require("http");
-const url = require("url");
 const sensors = require("./sensors");
 
 const errHandler = error => ({ error: error });
 
-const server = http.createServer((req, res) => {
+http.createServer((req, res) => {
     Promise.all([
         sensors.getSpeedFanData()
         .catch(errHandler),
