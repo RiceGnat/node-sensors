@@ -1,6 +1,6 @@
 const edge = require("edge-js");
 const path = require("path");
-const icue = require("./icue/sensor-logs");
+const icue = require("./icue/logs");
 
 const dll = "lib/Sensors.SoftwareInterface.dll";
 

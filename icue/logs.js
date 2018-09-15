@@ -36,9 +36,13 @@ const getLatestSensorValues = file => {
         fs.readFile(file, 'utf8', (err, data) => {
             if (err) return reject("Couldn't read sensor log file.");
             const values = csv(data, { columns: true });
-            resolve(Object.entries(values[values.length - 1])
-                .filter(([key, value]) => key !== "Timestamp")
-                .map(([key, value]) => ({ name: key, value: value })));
+            resolve({
+                source: "iCUE",
+                lastUpdate: values[values.length - 1]["Timestamp"],
+                sensors: Object.entries(values[values.length - 1])
+                    .filter(([key, value]) => key !== "Timestamp")
+                    .map(([key, value]) => ({ name: key, value: parseFloat(value) }))
+            });
         })
     });
 };
